@@ -1,93 +1,85 @@
 use db02;
--- Bảng NhomMatHang
--- Đảm bảo tên nhóm mặt hàng phải có ít nhất 3 ký tự
-ALTER TABLE NhomMatHang
-ADD CONSTRAINT chk_TenNhomMH CHECK (LENGTH(TenNhomMH) >= 3);
-
--- Bảng MatHang
--- Đảm bảo đơn giá của mặt hàng phải lớn hơn 0
+-- 1. Ràng buộc NOT NULL cho cột TenMH trong bảng MatHang
 ALTER TABLE MatHang
-ADD CONSTRAINT chk_DonGia CHECK (DonGia > 0);
+MODIFY COLUMN TenMH VARCHAR(100) NOT NULL;
 
--- Đảm bảo số lượng tồn kho không được âm
+-- 2. Ràng buộc NOT NULL cho cột DonViTinh trong bảng MatHang
 ALTER TABLE MatHang
-ADD CONSTRAINT chk_SoLuongTonKho CHECK (SoLuongTonKho >= 0);
+MODIFY COLUMN DonViTinh VARCHAR(50) NOT NULL;
 
--- Đảm bảo tên mặt hàng không bị trùng trong cùng một nhóm mặt hàng
+-- 3. Ràng buộc CHECK cho cột DonGia trong bảng MatHang (giá trị lớn hơn 0)
 ALTER TABLE MatHang
-ADD CONSTRAINT uq_TenMH UNIQUE (TenMH, MaNhomMH);
+ADD CONSTRAINT chk_dongia CHECK (DonGia > 0);
 
--- Bảng KhachHang
--- Đảm bảo số điện thoại của khách hàng là duy nhất
+-- 4. Ràng buộc CHECK cho cột SoLuongTonKho trong bảng MatHang (số lượng tồn kho không âm)
+ALTER TABLE MatHang
+ADD CONSTRAINT chk_soluongtonkho CHECK (SoLuongTonKho >= 0);
+
+-- 5. Ràng buộc DEFAULT cho cột DiemThuong trong bảng KhachHang
 ALTER TABLE KhachHang
-ADD CONSTRAINT uq_SoDT UNIQUE (SoDT);
+ALTER COLUMN DiemThuong SET DEFAULT 0;
 
--- Đảm bảo điểm thưởng không âm
+-- 6. Ràng buộc UNIQUE cho cột SoDT trong bảng KhachHang (Số điện thoại phải duy nhất)
 ALTER TABLE KhachHang
-ADD CONSTRAINT chk_DiemThuong CHECK (DiemThuong >= 0);
+ADD CONSTRAINT uq_sdt UNIQUE (SoDT);
 
--- Bảng MuaHang
--- Đảm bảo số lượng mua phải lớn hơn 0
-ALTER TABLE MuaHang
-ADD CONSTRAINT chk_SoLuong CHECK (SoLuong > 0);
-
--- Bảng NhanVien
--- Đảm bảo số điện thoại của nhân viên là duy nhất
+-- 7. Ràng buộc UNIQUE cho cột SoDT trong bảng NhanVien (Số điện thoại phải duy nhất)
 ALTER TABLE NhanVien
-ADD CONSTRAINT uq_SoDT_NV UNIQUE (SoDT);
+ADD CONSTRAINT uq_sdt_nv UNIQUE (SoDT);
 
--- Đảm bảo lương nhân viên không thấp hơn 5 triệu
+-- 8. Ràng buộc CHECK cho cột Luong trong bảng NhanVien (Lương phải lớn hơn 0)
 ALTER TABLE NhanVien
-ADD CONSTRAINT chk_Luong CHECK (Luong >= 5000000);
+ADD CONSTRAINT chk_luong CHECK (Luong > 0);
 
--- Đảm bảo tên nhân viên phải dài ít nhất 5 ký tự
+-- 9. Ràng buộc CHECK cho cột SoDT trong bảng NhanVien (Số điện thoại phải có định dạng hợp lệ)
 ALTER TABLE NhanVien
-ADD CONSTRAINT chk_TenNV CHECK (LENGTH(TenNV) >= 5);
+ADD CONSTRAINT chk_sdt_nv CHECK (SoDT LIKE '0[0-9]%');
 
--- Bảng HoaDon
--- Đảm bảo tổng tiền trong hóa đơn không âm
+-- 10. Ràng buộc CHECK cho cột TongTien trong bảng HoaDon (Tổng tiền phải lớn hơn 0)
 ALTER TABLE HoaDon
-ADD CONSTRAINT chk_TongTien CHECK (TongTien >= 0);
+ADD CONSTRAINT chk_tongtien CHECK (TongTien > 0);
 
--- Bảng ChiTietHoaDon
--- Đảm bảo số lượng trong chi tiết hóa đơn phải lớn hơn 0
+-- 11. Ràng buộc UNIQUE cho cột MaKH trong bảng HoaDon (Mỗi hóa đơn phải có khách hàng duy nhất)
+ALTER TABLE HoaDon
+ADD CONSTRAINT uq_makh UNIQUE (MaKH);
+
+-- 12. Ràng buộc UNIQUE cho cột MaNV trong bảng HoaDon (Mỗi hóa đơn phải có nhân viên duy nhất)
+ALTER TABLE HoaDon
+ADD CONSTRAINT uq_manv UNIQUE (MaNV);
+
+-- 13. Ràng buộc FOREIGN KEY cho cột MaKH trong bảng HoaDon (Khách hàng phải tồn tại trong bảng KhachHang)
+ALTER TABLE HoaDon
+ADD CONSTRAINT fk_hd_makh FOREIGN KEY (MaKH) REFERENCES KhachHang(MaKH);
+
+-- 14. Ràng buộc FOREIGN KEY cho cột MaNV trong bảng HoaDon (Nhân viên phải tồn tại trong bảng NhanVien)
+ALTER TABLE HoaDon
+ADD CONSTRAINT fk_hd_manv FOREIGN KEY (MaNV) REFERENCES NhanVien(MaNV);
+
+-- 15. Ràng buộc FOREIGN KEY cho cột MaMH trong bảng ChiTietHoaDon (Mặt hàng phải tồn tại trong bảng MatHang)
 ALTER TABLE ChiTietHoaDon
-ADD CONSTRAINT chk_SoLuong_CT CHECK (SoLuong > 0);
+ADD CONSTRAINT fk_cthd_mamh FOREIGN KEY (MaMH) REFERENCES MatHang(MaMH);
 
--- Đảm bảo đơn giá trong chi tiết hóa đơn phải lớn hơn 0
+-- 16. Ràng buộc FOREIGN KEY cho cột MaHD trong bảng ChiTietHoaDon (Hóa đơn phải tồn tại trong bảng HoaDon)
 ALTER TABLE ChiTietHoaDon
-ADD CONSTRAINT chk_DonGia_CT CHECK (DonGia > 0);
+ADD CONSTRAINT fk_cthd_mahd FOREIGN KEY (MaHD) REFERENCES HoaDon(MaHD);
 
--- Ràng buộc FOREIGN KEY bổ sung (tăng tính toàn vẹn dữ liệu)
--- Đảm bảo bảng MatHang tham chiếu đúng nhóm mặt hàng, tự động xóa mặt hàng nếu nhóm bị xóa
+-- 17. Ràng buộc CHECK cho cột SoLuong trong bảng ChiTietHoaDon (Số lượng phải lớn hơn 0)
+ALTER TABLE ChiTietHoaDon
+ADD CONSTRAINT chk_soluong_cthd CHECK (SoLuong > 0);
+
+-- 18. Ràng buộc CHECK cho cột DonGia trong bảng ChiTietHoaDon (Đơn giá phải lớn hơn 0)
+ALTER TABLE ChiTietHoaDon
+ADD CONSTRAINT chk_dongia_cthd CHECK (DonGia > 0);
+
+-- 19. Ràng buộc UNIQUE cho cặp MaHD và MaMH trong bảng ChiTietHoaDon (Mỗi hóa đơn chỉ có một mặt hàng duy nhất)
+ALTER TABLE ChiTietHoaDon
+ADD CONSTRAINT uq_mahd_mamh UNIQUE (MaHD, MaMH);
+
+-- 20. Ràng buộc CHECK cho cột MaNhomMH trong bảng MatHang (Mã nhóm mặt hàng phải tồn tại trong bảng NhomMatHang)
 ALTER TABLE MatHang
-ADD CONSTRAINT fk_NhomMH FOREIGN KEY (MaNhomMH) REFERENCES NhomMatHang(MaNhomMH) ON DELETE CASCADE;
+ADD CONSTRAINT chk_manhommh FOREIGN KEY (MaNhomMH) REFERENCES NhomMatHang(MaNhomMH);
 
--- Đảm bảo bảng MuaHang tham chiếu đúng mặt hàng, tự động xóa giao dịch nếu mặt hàng bị xóa
-ALTER TABLE MuaHang
-ADD CONSTRAINT fk_MH_MH FOREIGN KEY (MaMH) REFERENCES MatHang(MaMH) ON DELETE CASCADE;
+-- 21. Ràng buộc DEFAULT cho cột NgayNhap trong bảng MatHang (Ngày nhập mặc định là ngày hiện tại)
+-- ALTER TABLE MatHang
+-- MODIFY COLUMN NgayNhap DATE DEFAULT CURRENTDATE;
 
--- Đảm bảo bảng MuaHang tham chiếu đúng khách hàng, tự động xóa giao dịch nếu khách hàng bị xóa
-ALTER TABLE MuaHang
-ADD CONSTRAINT fk_MH_KH FOREIGN KEY (MaKH) REFERENCES KhachHang(MaKH) ON DELETE CASCADE;
-
--- Đảm bảo bảng HoaDon tham chiếu đúng khách hàng, đặt NULL nếu khách hàng bị xóa
-ALTER TABLE HoaDon
-ADD CONSTRAINT fk_HD_KH FOREIGN KEY (MaKH) REFERENCES KhachHang(MaKH) ON DELETE SET NULL;
-
--- Đảm bảo bảng ChiTietHoaDon tham chiếu đúng hóa đơn, tự động xóa chi tiết nếu hóa đơn bị xóa
-ALTER TABLE ChiTietHoaDon
-ADD CONSTRAINT fk_CT_HD FOREIGN KEY (MaHD) REFERENCES HoaDon(MaHD) ON DELETE CASCADE;
-
--- Đảm bảo bảng ChiTietHoaDon tham chiếu đúng mặt hàng, tự động xóa chi tiết nếu mặt hàng bị xóa
-ALTER TABLE ChiTietHoaDon
-ADD CONSTRAINT fk_CT_MH FOREIGN KEY (MaMH) REFERENCES MatHang(MaMH) ON DELETE CASCADE;
-
--- Ràng buộc CHECK bổ sung
--- Đảm bảo chức vụ nhân viên chỉ nhận một trong các giá trị xác định trước
-ALTER TABLE NhanVien
-ADD CONSTRAINT chk_ChucVu CHECK (ChucVu IN ('Quản lý', 'Nhân viên', 'Thực tập'));
-
--- Đảm bảo ngày lập hóa đơn không sớm hơn năm 2000
--- ALTER TABLE HoaDon
--- ADD CONSTRAINT chk_NgayLap CHECK (NgayLap >= '2000-01-01');
