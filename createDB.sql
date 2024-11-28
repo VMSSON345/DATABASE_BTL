@@ -1,0 +1,61 @@
+CREATE DATABASE DB02;
+use db02;
+CREATE TABLE NhomMatHang (
+    MaNhomMH INT PRIMARY KEY AUTO_INCREMENT,
+    TenNhomMH VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE MatHang (
+    MaMH INT PRIMARY KEY AUTO_INCREMENT,
+    TenMH VARCHAR(100) NOT NULL,
+    DonViTinh VARCHAR(50),
+    DonGia DOUBLE NOT NULL,
+    NgayNhap DATE,
+    MaNhomMH INT,
+    SoLuongTonKho INT,
+    FOREIGN KEY (MaNhomMH) REFERENCES NhomMatHang(MaNhomMH)
+);
+
+CREATE TABLE KhachHang (
+    MaKH INT PRIMARY KEY AUTO_INCREMENT,
+    TenKH VARCHAR(100) NOT NULL,
+    DiaChi VARCHAR(200),
+    SoDT VARCHAR(15),
+    DiemThuong INT DEFAULT 0
+);
+CREATE TABLE MuaHang (
+    MaMH INT,
+    MaKH INT,
+    NgayMua DATE NOT NULL,
+    SoLuong INT NOT NULL,
+    PRIMARY KEY (MaMH, MaKH, NgayMua),
+    FOREIGN KEY (MaMH) REFERENCES MatHang(MaMH),
+    FOREIGN KEY (MaKH) REFERENCES KhachHang(MaKH)
+);
+CREATE TABLE NhanVien (
+    MaNV INT PRIMARY KEY,
+    TenNV VARCHAR(255),
+    ChucVu VARCHAR(100),
+    Luong DOUBLE,
+    NgayVaoLam DATE,
+    SoDT VARCHAR(20)
+);
+CREATE TABLE HoaDon (
+    MaHD INT PRIMARY KEY AUTO_INCREMENT,
+    MaKH INT,
+    NgayLap DATE,
+    TongTien DOUBLE,
+    FOREIGN KEY (MaKH) REFERENCES KhachHang(MaKH)
+);
+
+CREATE TABLE ChiTietHoaDon (
+    MaHD INT,
+    MaMH INT,
+    SoLuong INT,
+    DonGia DOUBLE,
+    PRIMARY KEY (MaHD, MaMH),
+    FOREIGN KEY (MaHD) REFERENCES HoaDon(MaHD),
+    FOREIGN KEY (MaMH) REFERENCES MatHang(MaMH)
+);
+
+
