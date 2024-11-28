@@ -53,3 +53,12 @@ CREATE TABLE ChiTietHoaDon (
     FOREIGN KEY (MaHD) REFERENCES HoaDon(MaHD),
     FOREIGN KEY (MaMH) REFERENCES MatHang(MaMH)
 );
+CREATE TABLE MuaHang (
+    MaMH INT,
+    MaKH INT,
+    NgayMua DATE NOT NULL,
+    SoLuong INT NOT NULL,
+    PRIMARY KEY (MaMH, MaKH, NgayMua),
+    FOREIGN KEY (MaMH) REFERENCES MatHang(MaMH),
+    FOREIGN KEY (MaKH) REFERENCES KhachHang(MaKH)
+);

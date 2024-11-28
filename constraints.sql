@@ -1,4 +1,3 @@
-use db02;
 -- 1. Ràng buộc NOT NULL cho cột TenMH trong bảng MatHang
 ALTER TABLE MatHang
 MODIFY COLUMN TenMH VARCHAR(100) NOT NULL;
@@ -79,7 +78,11 @@ ADD CONSTRAINT uq_mahd_mamh UNIQUE (MaHD, MaMH);
 ALTER TABLE MatHang
 ADD CONSTRAINT chk_manhommh FOREIGN KEY (MaNhomMH) REFERENCES NhomMatHang(MaNhomMH);
 
--- 21. Ràng buộc DEFAULT cho cột NgayNhap trong bảng MatHang (Ngày nhập mặc định là ngày hiện tại)
--- ALTER TABLE MatHang
--- MODIFY COLUMN NgayNhap DATE DEFAULT CURRENTDATE;
 
+-- 21. Ràng buộc FOREIGN KEY cho cột MaMH trong bảng MuaHang (Mặt hàng phải tồn tại trong bảng MatHang)
+ALTER TABLE MuaHang
+ADD CONSTRAINT fk_mua_mamh FOREIGN KEY (MaMH) REFERENCES MatHang(MaMH);
+
+-- 22. Ràng buộc FOREIGN KEY cho cột MaKH trong bảng MuaHang (Khách hàng phải tồn tại trong bảng KhachHang)
+ALTER TABLE MuaHang
+ADD CONSTRAINT fk_mua_makh FOREIGN KEY (MaKH) REFERENCES KhachHang(MaKH);
