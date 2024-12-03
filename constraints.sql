@@ -33,9 +33,8 @@ ADD CONSTRAINT uq_sdt_nv UNIQUE (SoDT);
 ALTER TABLE NhanVien
 ADD CONSTRAINT chk_luong CHECK (Luong > 0);
 
--- 9. Ràng buộc CHECK cho cột SoDT trong bảng NhanVien (Số điện thoại phải có định dạng hợp lệ)
-ALTER TABLE NhanVien
-ADD CONSTRAINT chk_sdt_nv CHECK (SoDT LIKE '0[0-9]%');
+-- 9 để MATT tự tăng
+ALTER TABLE ThanhToan MODIFY MaTT INT AUTO_INCREMENT;
 
 -- 10. Ràng buộc CHECK cho cột TongTien trong bảng HoaDon (Tổng tiền phải lớn hơn 0)
 ALTER TABLE HoaDon
@@ -120,3 +119,6 @@ ADD CONSTRAINT chk_sotien CHECK (SoTien > 0);
 -- 30. Ràng buộc FOREIGN KEY cho cột MaHD trong bảng ThanhToan (Hóa đơn phải tồn tại trong bảng HoaDon)
 ALTER TABLE ThanhToan
 ADD CONSTRAINT fk_thanhtoan_mahd FOREIGN KEY (MaHD) REFERENCES HoaDon(MaHD);
+
+
+
