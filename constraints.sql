@@ -1,124 +1,44 @@
 use db02;
--- 1. Ràng buộc NOT NULL cho cột TenMH trong bảng MatHang
-ALTER TABLE MatHang
-MODIFY COLUMN TenMH VARCHAR(255) NOT NULL;
+-- Constraint 1: Không cho phép giá mặt hàng âm
+ALTER TABLE MAT_HANG
+ADD CONSTRAINT CK_GIA_MH CHECK (GIA_MH >= 0);
 
--- 2. Ràng buộc NOT NULL cho cột DonViTinh trong bảng MatHang
-ALTER TABLE MatHang
-MODIFY COLUMN DonViTinh VARCHAR(50) NOT NULL;
+-- Constraint 2: Không cho phép số lượng trong chi tiết hóa đơn âm
+ALTER TABLE CHI_TIET_HOA_DON
+ADD CONSTRAINT CK_SO_LUONG CHECK (SO_LUONG >= 0);
 
--- 3. Ràng buộc CHECK cho cột DonGia trong bảng MatHang (giá trị lớn hơn 0)
-ALTER TABLE MatHang
-ADD CONSTRAINT chk_dongia CHECK (DonGia > 0);
+-- Constraint 3: Không cho phép giá bán trong chi tiết hóa đơn âm
+ALTER TABLE CHI_TIET_HOA_DON
+ADD CONSTRAINT CK_GIA_BAN CHECK (GIA_BAN >= 0);
 
--- 4. Ràng buộc CHECK cho cột SoLuongTonKho trong bảng MatHang (số lượng tồn kho không âm)
+-- Constraint 4: Số điện thoại nhân viên phải có đúng 10 ký tự số
+ALTER TABLE NHAN_VIEN
+ADD CONSTRAINT CK_SDT_NV CHECK (SDT_NV REGEXP '^[0-9]{10}$');
 
+-- Constraint 5: Số điện thoại khách hàng phải có đúng 10 ký tự số
+ALTER TABLE KHACH_HANG
+ADD CONSTRAINT CK_SDT_KH CHECK (SDT_KH REGEXP '^[0-9]{10}$');
 
-ALTER TABLE MatHang
-ADD CONSTRAINT chk_soluongtonkho CHECK (SoLuongTonKho >= 0);
+-- Constraint 6: Chức vụ nhân viên phải nằm trong danh sách xác định (VD: 'Quản lý', 'Nhân viên', 'Thực tập')
+ALTER TABLE NHAN_VIEN
+ADD CONSTRAINT CK_CHUC_VU CHECK (CHUC_VU IN ('Quản lý', 'Nhân viên', 'Thực tập'));
 
--- 5. Ràng buộc DEFAULT cho cột DiemThuong trong bảng KhachHang
-ALTER TABLE KhachHang
-ALTER COLUMN DiemThuong SET DEFAULT 0;
+-- Constraint 7: Tổng tiền trong hóa đơn không được âm
+ALTER TABLE HOA_DON
+ADD CONSTRAINT CK_TONG_TIEN CHECK (TONG_TIEN >= 0);
 
--- 6. Ràng buộc UNIQUE cho cột SoDT trong bảng KhachHang (Số điện thoại phải duy nhất)
-ALTER TABLE KhachHang
-ADD CONSTRAINT uq_sdt UNIQUE (SoDT);
+-- Constraint 8: Không cho phép tên nhóm mặt hàng trống
+ALTER TABLE NHOM_MAT_HANG
+ADD CONSTRAINT CK_TEN_NHOM_NOT_EMPTY CHECK (LENGTH(TRIM(TEN_NHOM)) > 0);
 
--- 7. Ràng buộc UNIQUE cho cột SoDT trong bảng NhanVien (Số điện thoại phải duy nhất)
-ALTER TABLE NhanVien
-ADD CONSTRAINT uq_sdt_nv UNIQUE (SoDT);
+-- Constraint 9: Không cho phép tên mặt hàng trống
+ALTER TABLE MAT_HANG
+ADD CONSTRAINT CK_TEN_MH_NOT_EMPTY CHECK (LENGTH(TRIM(TEN_MH)) > 0);
 
--- 8. Ràng buộc CHECK cho cột Luong trong bảng NhanVien (Lương phải lớn hơn 0)
-ALTER TABLE NhanVien
-ADD CONSTRAINT chk_luong CHECK (Luong > 0);
+-- Constraint 10: Không cho phép tên nhân viên trống
+ALTER TABLE NHAN_VIEN
+ADD CONSTRAINT CK_TEN_NV_NOT_EMPTY CHECK (LENGTH(TRIM(TEN_NV)) > 0);
 
--- 9 để MATT tự tăng
-ALTER TABLE ThanhToan MODIFY MaTT INT AUTO_INCREMENT;
-
--- 10. Ràng buộc CHECK cho cột TongTien trong bảng HoaDon (Tổng tiền phải lớn hơn 0)
-ALTER TABLE HoaDon
-ADD CONSTRAINT chk_tongtien CHECK (TongTien > 0);
-
--- 11. Ràng buộc UNIQUE cho cột MaKH trong bảng HoaDon (Mỗi hóa đơn phải có khách hàng duy nhất)
-ALTER TABLE HoaDon
-ADD CONSTRAINT uq_makh UNIQUE (MaKH);
-
--- 12. Ràng buộc UNIQUE cho cột MaNV trong bảng HoaDon (Mỗi hóa đơn phải có nhân viên duy nhất)
-ALTER TABLE HoaDon
-ADD CONSTRAINT uq_manv UNIQUE (MaNV);
-
--- 13. Ràng buộc FOREIGN KEY cho cột MaKH trong bảng HoaDon (Khách hàng phải tồn tại trong bảng KhachHang)
-ALTER TABLE HoaDon
-ADD CONSTRAINT fk_hd_makh FOREIGN KEY (MaKH) REFERENCES KhachHang(MaKH);
-
--- 14. Ràng buộc FOREIGN KEY cho cột MaNV trong bảng HoaDon (Nhân viên phải tồn tại trong bảng NhanVien)
-ALTER TABLE HoaDon
-ADD CONSTRAINT fk_hd_manv FOREIGN KEY (MaNV) REFERENCES NhanVien(MaNV);
-
--- 15. Ràng buộc FOREIGN KEY cho cột MaMH trong bảng ChiTietHoaDon (Mặt hàng phải tồn tại trong bảng MatHang)
-ALTER TABLE ChiTietHoaDon
-ADD CONSTRAINT fk_cthd_mamh FOREIGN KEY (MaMH) REFERENCES MatHang(MaMH);
-
--- 16. Ràng buộc FOREIGN KEY cho cột MaHD trong bảng ChiTietHoaDon (Hóa đơn phải tồn tại trong bảng HoaDon)
-ALTER TABLE ChiTietHoaDon
-ADD CONSTRAINT fk_cthd_mahd FOREIGN KEY (MaHD) REFERENCES HoaDon(MaHD);
-
--- 17. Ràng buộc CHECK cho cột SoLuong trong bảng ChiTietHoaDon (Số lượng phải lớn hơn 0)
-ALTER TABLE ChiTietHoaDon
-ADD CONSTRAINT chk_soluong_cthd CHECK (SoLuong > 0);
-
--- 18. Ràng buộc CHECK cho cột DonGia trong bảng ChiTietHoaDon (Đơn giá phải lớn hơn 0)
-ALTER TABLE ChiTietHoaDon
-ADD CONSTRAINT chk_dongia_cthd CHECK (DonGia > 0);
-
--- 19. Ràng buộc UNIQUE cho cặp MaHD và MaMH trong bảng ChiTietHoaDon (Mỗi hóa đơn chỉ có một mặt hàng duy nhất)
-ALTER TABLE ChiTietHoaDon
-ADD CONSTRAINT uq_mahd_mamh UNIQUE (MaHD, MaMH);
-
--- 20. Ràng buộc CHECK cho cột NhomHang trong bảng MatHang (Mã nhóm hàng phải tồn tại trong bảng NhomMatHang)
-ALTER TABLE MatHang
-ADD CONSTRAINT chk_nhomhang FOREIGN KEY (NhomHang) REFERENCES NhomMatHang(MaNhomMH);
-
--- 21. Ràng buộc DEFAULT cho cột NgayNhap trong bảng MatHang (Ngày nhập mặc định là ngày hiện tại)
--- ALTER TABLE MatHang
--- MODIFY COLUMN NgayNhap DATE DEFAULT DATE(NOW);
-
--- 22. Ràng buộc UNIQUE cho cặp MaMH, MaKH và NgayMua trong bảng MuaHang (Mỗi khách hàng mua mặt hàng chỉ một lần trong ngày)
-ALTER TABLE MuaHang
-ADD CONSTRAINT uq_mamh_makh_ngaymua UNIQUE (MaMH, MaKH, NgayMua);
-
--- 23. Ràng buộc FOREIGN KEY cho cột MaMH trong bảng MuaHang (Mặt hàng phải tồn tại trong bảng MatHang)
-ALTER TABLE MuaHang
-ADD CONSTRAINT fk_mua_mamh FOREIGN KEY (MaMH) REFERENCES MatHang(MaMH);
-
--- 24. Ràng buộc FOREIGN KEY cho cột MaKH trong bảng MuaHang (Khách hàng phải tồn tại trong bảng KhachHang)
-ALTER TABLE MuaHang
-ADD CONSTRAINT fk_mua_makh FOREIGN KEY (MaKH) REFERENCES KhachHang(MaKH);
-
--- 25. Ràng buộc CHECK cho cột GiamGia trong bảng KhuyenMai (Giảm giá phải nằm trong khoảng từ 0 đến 100)
-ALTER TABLE KhuyenMai
-ADD CONSTRAINT chk_giamgia CHECK (GiamGia >= 0 AND GiamGia <= 100);
-
--- 26. Ràng buộc CHECK cho cột NgayBatDau trong bảng KhuyenMai (Ngày bắt đầu phải trước ngày kết thúc)
-ALTER TABLE KhuyenMai
-ADD CONSTRAINT chk_ngaybatdau CHECK (NgayBatDau < NgayKetThuc);
-
--- 27. Ràng buộc FOREIGN KEY cho cột MaMH trong bảng MatHangKhuyenMai (Mặt hàng phải tồn tại trong bảng MatHang)
-ALTER TABLE MatHangKhuyenMai
-ADD CONSTRAINT fk_mamh_makm FOREIGN KEY (MaMH) REFERENCES MatHang(MaMH);
-
--- 28. Ràng buộc FOREIGN KEY cho cột MaKM trong bảng MatHangKhuyenMai (Khuyến mãi phải tồn tại trong bảng KhuyenMai)
-ALTER TABLE MatHangKhuyenMai
-ADD CONSTRAINT fk_km_mamh FOREIGN KEY (MaKM) REFERENCES KhuyenMai(MaKM);
-
--- 29. Ràng buộc CHECK cho cột SoTien trong bảng ThanhToan (Số tiền phải lớn hơn 0)
-ALTER TABLE ThanhToan
-ADD CONSTRAINT chk_sotien CHECK (SoTien > 0);
-
--- 30. Ràng buộc FOREIGN KEY cho cột MaHD trong bảng ThanhToan (Hóa đơn phải tồn tại trong bảng HoaDon)
-ALTER TABLE ThanhToan
-ADD CONSTRAINT fk_thanhtoan_mahd FOREIGN KEY (MaHD) REFERENCES HoaDon(MaHD);
-
-
-
+-- Constraint 11: Địa chỉ khách hàng không được vượt quá 100 ký tự
+ALTER TABLE KHACH_HANG
+ADD CONSTRAINT CK_DIA_CHI_LENGTH CHECK (LENGTH(DIA_CHI) <= 100);

@@ -1,68 +1,72 @@
 use db02;
--- SET SQL_SAFE_UPDATES = 0;
-INSERT INTO NhomMatHang (MaNhomMH, TenNhomMH)
-VALUES (1, 'Đồ gia dụng'),
-       (2, 'Thực phẩm'),
-       (3, 'Đồ điện tử'),
-       (4, 'Thời trang'),
-       (5, 'Đồ chơi trẻ em');
+INSERT INTO NHOM_MAT_HANG (MA_NHOM, TEN_NHOM) VALUES
+('N001', 'Điện tử'),
+('N002', 'Gia dụng'),
+('N003', 'Thời trang'),
+('N004', 'Thực phẩm'),
+('N005', 'Đồ chơi'),
+('N006', 'Mỹ phẩm'),
+('N007', 'Văn phòng phẩm'),
+('N008', 'Thiết bị y tế'),
+('N009', 'Thể thao'),
+('N010', 'Sách');
 
-INSERT INTO MatHang (MaMH, TenMH, DonViTinh, DonGia, NgayNhap, NhomHang, SoLuongTonKho)
-VALUES (1, 'Nồi cơm điện', 'Cái', 500000, '2024-11-01', 1, 20),
-       (2, 'Sữa tươi', 'Hộp', 15000, '2024-11-02', 2, 50),
-       (3, 'Laptop', 'Chiếc', 15000000, '2024-11-03', 3, 10),
-       (4, 'Áo thun', 'Cái', 200000, '2024-11-04', 4, 30),
-       (5, 'Xe đồ chơi', 'Chiếc', 300000, '2024-11-05', 5, 15);
+INSERT INTO MAT_HANG (MA_MH, TEN_MH, GIA_MH, MA_NHOM) VALUES
+('MH001', 'Tivi', 5000000, 'N001'),
+('MH002', 'Tủ lạnh', 10000000, 'N002'),
+('MH003', 'Áo thun', 150000, 'N003'),
+('MH004', 'Bánh mì', 20000, 'N004'),
+('MH005', 'Búp bê', 300000, 'N005'),
+('MH006', 'Son môi', 250000, 'N006'),
+('MH007', 'Bút bi', 5000, 'N007'),
+('MH008', 'Máy đo huyết áp', 1200000, 'N008'),
+('MH009', 'Giày chạy bộ', 900000, 'N009'),
+('MH010', 'Sách giáo khoa', 50000, 'N010');
 
-INSERT INTO KhachHang (MaKH, TenKH, DiaChi, SoDT, DiemThuong)
-VALUES (1, 'Nguyễn Văn A', 'Hà Nội', '0901234567', 100),
-       (2, 'Trần Thị B', 'TP HCM', '0912345678', 200),
-       (3, 'Lê Văn C', 'Đà Nẵng', '0923456789', 150),
-       (4, 'Phạm Thị D', 'Hải Phòng', '0934567890', 80),
-       (5, 'Hoàng Văn E', 'Cần Thơ', '0945678901', 50);
+INSERT INTO NHAN_VIEN (MA_NV, TEN_NV, CHUC_VU, SDT_NV) VALUES
+('NV001', 'Nguyễn Văn A', 'Quản lý', '0912345678'),
+('NV002', 'Trần Thị B', 'Nhân viên', '0912345679'),
+('NV003', 'Lê Văn C', 'Nhân viên', '0912345680'),
+('NV004', 'Phạm Thị D', 'Thực tập', '0912345681'),
+('NV005', 'Vũ Văn E', 'Nhân viên', '0912345682'),
+('NV006', 'Ngô Thị F', 'Thực tập', '0912345683'),
+('NV007', 'Đỗ Văn G', 'Quản lý', '0912345684'),
+('NV008', 'Hoàng Thị H', 'Nhân viên', '0912345685'),
+('NV009', 'Phạm Văn I', 'Thực tập', '0912345686'),
+('NV010', 'Nguyễn Thị K', 'Nhân viên', '0912345687');
 
-INSERT INTO NhanVien (MaNV, TenNV, ChucVu, DiaChi, SoDT, NgayVaoLam, Luong) 
-VALUES 
-(1, 'Nguyễn Văn X', 'Quản lý', 'Hà Nội', '0971234567', '2023-01-01', 15000000),
-(2, 'Trần Thị Y', 'Nhân viên bán hàng', 'Hà Nội', '0981234567', '2023-06-01', 10000000),
-(3, 'Lê Văn Z', 'Nhân viên kho', 'Đà Nẵng', '0991234567', '2024-01-01', 8000000),
-(4, 'Hoàng Văn Q', 'Quản lý', 'TP HCM', '0901234568', '2022-05-01', 15000000),
-(5, 'Phạm Thị K', 'Nhân viên bán hàng', 'Hải Phòng', '0911234568', '2024-07-01', 9500000);
+INSERT INTO KHACH_HANG (MA_KH, TEN_KH, SDT_KH, DIA_CHI) VALUES
+('KH001', 'Nguyễn Văn X', '0987654321', 'Hà Nội'),
+('KH002', 'Trần Thị Y', '0987654322', 'Hồ Chí Minh'),
+('KH003', 'Lê Văn Z', '0987654323', 'Đà Nẵng'),
+('KH004', 'Phạm Thị U', '0987654324', 'Cần Thơ'),
+('KH005', 'Vũ Văn V', '0987654325', 'Hải Phòng'),
+('KH006', 'Ngô Thị W', '0987654326', 'Bắc Giang'),
+('KH007', 'Đỗ Văn Q', '0987654327', 'Nam Định'),
+('KH008', 'Hoàng Thị P', '0987654328', 'Vĩnh Long'),
+('KH009', 'Phạm Văn O', '0987654329', 'Lào Cai'),
+('KH010', 'Nguyễn Thị N', '0987654330', 'Huế');
 
-INSERT INTO HoaDon (MaKH, MaNV, NgayLap_HD, TongTien)
-VALUES (1, 1, '2024-11-05', 750000),
-       (2, 2, '2024-11-06', 300000),
-       (3, 3, '2024-11-07', 15000000),
-       (4, 4, '2024-11-08', 200000),
-       (5, 5, '2024-11-09', 450000);
+INSERT INTO HOA_DON (MA_HD, NGAY_LAP, MA_NV, MA_KH, TONG_TIEN) VALUES
+('HD001', '2024-12-01', 'NV001', 'KH001', 1000000),
+('HD002', '2024-12-02', 'NV002', 'KH002', 2000000),
+('HD003', '2024-12-03', 'NV003', 'KH003', 1500000),
+('HD004', '2024-12-04', 'NV004', 'KH004', 2500000),
+('HD005', '2024-12-05', 'NV005', 'KH005', 3000000),
+('HD006', '2024-12-06', 'NV006', 'KH006', 1000000),
+('HD007', '2024-12-07', 'NV007', 'KH007', 2000000),
+('HD008', '2024-12-08', 'NV008', 'KH008', 4000000),
+('HD009', '2024-12-09', 'NV009', 'KH009', 5000000),
+('HD010', '2024-12-10', 'NV010', 'KH010', 6000000);
 
-INSERT INTO ChiTietHoaDon (MaHD, MaMH, SoLuong, DonGia)
-VALUES (1, 1, 1, 500000),
-       (2, 2, 20, 15000),
-       (3, 3, 1, 15000000),
-       (4, 4, 1, 200000),
-       (5, 5, 3, 300000);
-
--- KhuyenMai
-INSERT INTO KhuyenMai (MaKM, TenKM, MoTa, NgayBatDau, NgayKetThuc, GiamGia)
-VALUES (1, 'Giảm giá mùa hè', 'Giảm giá 10%', '2024-06-01', '2024-06-30', 10),
-       (2, 'Black Friday', 'Giảm giá 50%', '2024-11-25', '2024-11-30', 50),
-       (3, 'Giảm giá cuối năm', 'Giảm giá 20%', '2024-12-15', '2024-12-31', 20),
-       (4, 'Mua 1 tặng 1', 'Áp dụng đồ chơi trẻ em', '2024-01-01', '2024-01-15', 0),
-       (5, 'Ưu đãi đặc biệt', 'Giảm giá 30%', '2024-03-01', '2024-03-10', 30);
-
-INSERT INTO MatHangKhuyenMai (MaMH, MaKM)
-VALUES (1, 1),
-       (2, 2),
-       (3, 3),
-       (4, 5),
-       (5, 4);
-
-INSERT INTO ThanhToan (MaHD, PhuongThucThanhToan, SoTien, NgayThanhToan)
-VALUES 
-(1, 'Tiền mặt', 750000, '2024-11-05'),
-(2, 'Thẻ tín dụng', 300000, '2024-11-06'),
-(3, 'Chuyển khoản', 15000000, '2024-11-07'),
-(4, 'Ví điện tử', 200000, '2024-11-08'),
-(5, 'Tiền mặt', 450000, '2024-11-09');
-
+INSERT INTO CHI_TIET_HOA_DON (MA_HD, MA_MH, SO_LUONG, GIA_BAN) VALUES
+('HD001', 'MH001', 1, 5000000),
+('HD001', 'MH002', 2, 10000000),
+('HD002', 'MH003', 3, 150000),
+('HD003', 'MH004', 4, 20000),
+('HD004', 'MH005', 1, 300000),
+('HD005', 'MH006', 2, 250000),
+('HD006', 'MH007', 10, 5000),
+('HD007', 'MH008', 1, 1200000),
+('HD008', 'MH009', 2, 900000),
+('HD009', 'MH010', 5, 50000);
