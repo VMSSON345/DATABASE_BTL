@@ -24,8 +24,8 @@ ALTER TABLE NHAN_VIEN
 ADD CONSTRAINT CK_CHUC_VU CHECK (CHUC_VU IN ('Quản lý', 'Nhân viên', 'Thực tập'));
 
 -- Constraint 7: Tổng tiền trong hóa đơn không được âm
-ALTER TABLE HOA_DON
-ADD CONSTRAINT CK_TONG_TIEN CHECK (TONG_TIEN >= 0);
+-- ALTER TABLE HOA_DON
+-- ADD CONSTRAINT CK_TONG_TIEN CHECK (TONG_TIEN >= 0);
 
 -- Constraint 8: Không cho phép tên nhóm mặt hàng trống
 ALTER TABLE NHOM_MAT_HANG
