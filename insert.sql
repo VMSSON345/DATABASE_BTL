@@ -62,7 +62,14 @@ INSERT INTO MAT_HANG (MA_MH, TEN_MH, GIA_MH, SL_TONKHO, MA_NHOM) VALUES
 ('MH028', 'Khóa học online', 500000, 150, 'N028'),
 ('MH029', 'Vé xem phim', 100000, 500, 'N029'),
 ('MH030', 'Đặt phòng khách sạn', 1000000, 80, 'N030'),
-('MH031', 'Lego', 500000, 100, 'N017');
+('MH031', 'Lego', 500000, 100, 'N017'),
+('MH032', 'Chảo', 400000, 100, 'N005'),
+('MH033', 'Xoong', 300000, 200, 'N005'),
+('MH034', 'Thìa', 20000, 3000, 'N005'),
+('MH035', 'Đũa', 40000, 3000, 'N005'),
+('MH036', 'Bát To', 20000, 3000, 'N005'),
+('MH037', 'Ấm Siêu Tốc', 100000, 1500, 'N005'),
+('MH038', 'Bếp Từ', 400000, 500, 'N005');
 
 INSERT INTO NHAN_VIEN (MA_NV, TEN_NV, CHUC_VU, SDT_NV) VALUES
 ('NV001', 'Nguyễn Văn An', 'Quản lý', '0901234567'),
