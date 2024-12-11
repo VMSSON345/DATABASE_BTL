@@ -1,27 +1,24 @@
 USE DB02;
-
+select * from nhan_vien;
 /*** Query using inner join ***/
 -- Truy vấn khách hàng có ngày đặt trước ngày 5 tháng 12 năm 2024
 select kh.TEN_KH, kh.SDT_KH, hd.NGAY_LAP from khach_hang kh
 inner join hoa_don hd on hd.MA_KH = kh.MA_KH
 where hd.NGAY_LAP < '2024-12-05';
 
--- Truy vấn nhóm mặt hàng là Đồ chơi và Gia dụng và số lượng tồn kho của những mặt hàng đó 
-select nmh.TEN_NHOM, mh.SL_TONKHO from nhom_mat_hang nmh
+-- Truy vấn nhóm mặt hàng là Đồ chơi và Đồ gia dụng và tổng số lượng tồn kho của những mặt hàng đó 
+select nmh.TEN_NHOM, sum(mh.SL_TONKHO) as total from nhom_mat_hang nmh
 inner join mat_hang mh on mh.MA_NHOM = nmh.MA_NHOM 
-where nmh.TEN_NHOM = 'Đồ chơi' or nmh.TEN_NHOM = 'Gia dụng';
+group by nmh.TEN_NHOM
+having nmh.TEN_NHOM = 'Đồ chơi' or nmh.TEN_NHOM = 'Đồ gia dụng';
 
 /*** Query using outer join ***/
--- Truy vấn tất cả đơn hàng và khách hàng 
-(select kh.TEN_KH, kh.SDT_KH, hd.MA_HD
-from khach_hang kh
-left join hoa_don hd
-on kh.MA_KH = hd.MA_KH)
+-- 	
+(select kh.TEN_KH, kh.SDT_KH, hd.MA_HD from khach_hang kh
+left join hoa_don hd on kh.MA_KH = hd.MA_KH)
 union
-(select kh.TEN_KH, kh.SDT_KH, hd.MA_HD
-from khach_hang kh	
-right join hoa_don hd
-on kh.MA_KH = hd.MA_KH);
+(select kh.TEN_KH, kh.SDT_KH, hd.MA_HD from khach_hang kh	
+right join hoa_don hd on kh.MA_KH = hd.MA_KH);
 
 -- Truy vấn tất cả nhân viên và tất cả đơn hàng
 (select nv.TEN_NV, nv.CHUC_VU, nv.SDT_NV, hd.MA_HD from nhan_vien nv
