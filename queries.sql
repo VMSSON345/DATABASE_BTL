@@ -1,5 +1,5 @@
 USE DB02;
-select * from nhan_vien;
+
 /*** Query using inner join ***/
 -- Truy vấn khách hàng có ngày đặt trước ngày 5 tháng 12 năm 2024
 select kh.TEN_KH, kh.SDT_KH, hd.NGAY_LAP from khach_hang kh
