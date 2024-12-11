@@ -23,20 +23,40 @@ ADD CONSTRAINT CK_SDT_KH CHECK (SDT_KH REGEXP '^[0-9]{10}$');
 ALTER TABLE NHAN_VIEN
 ADD CONSTRAINT CK_CHUC_VU CHECK (CHUC_VU IN ('Quản lý', 'Nhân viên', 'Thực tập'));
 
--- Constraint 7: Tổng tiền trong hóa đơn không được âm
--- ALTER TABLE HOA_DON
--- ADD CONSTRAINT CK_TONG_TIEN CHECK (TONG_TIEN >= 0);
-
--- Constraint 8: Không cho phép tên nhóm mặt hàng trống
+-- Constraint 7: Không cho phép tên nhóm mặt hàng trống
 ALTER TABLE NHOM_MAT_HANG
 ADD CONSTRAINT CK_TEN_NHOM_NOT_EMPTY CHECK (LENGTH(TRIM(TEN_NHOM)) > 0);
 
--- Constraint 9: Không cho phép tên mặt hàng trống
+-- Constraint 8: Không cho phép tên mặt hàng trống
 ALTER TABLE MAT_HANG
 ADD CONSTRAINT CK_TEN_MH_NOT_EMPTY CHECK (LENGTH(TRIM(TEN_MH)) > 0);
 
--- Constraint 10: Không cho phép tên nhân viên trống
+-- Constraint 9: Không cho phép tên nhân viên trống
 ALTER TABLE NHAN_VIEN
 ADD CONSTRAINT CK_TEN_NV_NOT_EMPTY CHECK (LENGTH(TRIM(TEN_NV)) > 0);
+
+-- Constraint 10: Số lượng tồn kho của mặt hàng không được âm
+ALTER TABLE MAT_HANG
+ADD CONSTRAINT CK_SL_TONKHO CHECK (SL_TONKHO >= 0);
+
+-- Constraint 11: Mã nhóm mặt hàng phải bắt đầu bằng 'N'
+ALTER TABLE NHOM_MAT_HANG
+ADD CONSTRAINT CK_MA_NHOM_FORMAT CHECK (MA_NHOM LIKE 'N%');
+
+-- Constraint 12: Mã mặt hàng phải bắt đầu bằng 'MH'
+ALTER TABLE MAT_HANG
+ADD CONSTRAINT CK_MA_MH_FORMAT CHECK (MA_MH LIKE 'MH%');
+
+-- Constraint 13: Mã nhân viên phải bắt đầu bằng 'NV'
+ALTER TABLE NHAN_VIEN
+ADD CONSTRAINT CK_MA_NV_FORMAT CHECK (MA_NV LIKE 'NV%');
+
+-- Constraint 14: Mã khách hàng phải bắt đầu bằng 'KH'
+ALTER TABLE KHACH_HANG
+ADD CONSTRAINT CK_MA_KH_FORMAT CHECK (MA_KH LIKE 'KH%');
+
+-- Constraint 15: Mã hóa đơn phải bắt đầu bằng 'HD'
+ALTER TABLE HOA_DON
+ADD CONSTRAINT CK_MA_HD_FORMAT CHECK (MA_HD LIKE 'HD%');
 
 
