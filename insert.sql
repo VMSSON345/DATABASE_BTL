@@ -114,12 +114,7 @@ INSERT INTO KHACH_HANG (MA_KH, TEN_KH, SDT_KH, DIA_CHI) VALUES
 ('KH027', 'Tòng Văn Nam', '0928890123', '596 Lê Đức Thọ, Quận Cầu Giấy, Hà Nội'),
 ('KH028', 'Vừ Thị Nga', '0929901234', '618 Đỗ Quang, Quận Cầu Giấy, Hà Nội'),
 ('KH029', 'Yên Văn Ổn', '0936012345', '6 Nguyễn Thị Định, Quận Cầu Giấy, Hà Nội'),
-('KH030', 'Maven Thắng', '0937123456', '60 Phùng Chí Kiên, Quận Cầu Giấy, Hà Nội'),
-('KH031', 'Maven Văn', '0937123456', '65 Mai Dịch, Quận Cầu Giấy, Hà Nội'),
-('KH032', 'Nguyễn Trung Thắng', '0937123456', '16 Chùa Hà, Quận Cầu Giấy, Hà Nội'),
-('KH033', 'Nguyễn Trung Văn', '0937123456', '62 Trung Kính, Quận Cầu Giấy, Hà Nội'),
-('KH034', 'Cristiano Ronaldo', '0937123456', '662 Cốm Vòng, Quận Cầu Giấy, Hà Nội'),
-('KH035', 'Maven Nguyễn', '0937123456', '60 Đỗ Quang, Quận Cầu Giấy, Hà Nội');
+('KH030', 'Maven Thắng', '0937123456', '60 Phùng Chí Kiên, Quận Cầu Giấy, Hà Nội');
 
 INSERT INTO HOA_DON (MA_HD, NGAY_LAP, MA_NV, MA_KH) VALUES
 ('HD001', '2023-10-01', 'NV001', 'KH001'),
