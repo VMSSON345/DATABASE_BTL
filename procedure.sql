@@ -1,3 +1,4 @@
+USE DB02;
 -- Xóa các procedure nếu đã tồn tại
 DROP PROCEDURE IF EXISTS Thong_tin_khach_hang;
 DROP PROCEDURE IF EXISTS Danh_sach_mat_hang;
@@ -43,9 +44,9 @@ END $$
 CREATE PROCEDURE Thong_ke_ton_kho()
 BEGIN
     SELECT 
-        MA_MH, TEN_MH, SLTONKHO 
+        MA_MH, TEN_MH, SL_TONKHO 
     FROM mat_hang 
-    WHERE SLTONKHO > 0;
+    WHERE SL_TONKHO > 0;
 END $$
 
 -- Procedure: Cập nhật thông tin mặt hàng
@@ -57,7 +58,7 @@ CREATE PROCEDURE Cap_nhat_mat_hang(
 )
 BEGIN
     UPDATE mat_hang 
-    SET TEN_MH = tenMH, GIA_MH = giaMH, SLTONKHO = soLuongTonKho 
+    SET TEN_MH = tenMH, GIA_MH = giaMH, SL_TONKHO = soLuongTonKho 
     WHERE MA_MH = maMH;
 END $$
 
@@ -94,7 +95,7 @@ END $$
 DELIMITER ;
 
 -- Gọi các procedure để kiểm tra
-CALL Thong_tin_khach_hang(KH001);
+CALL Thong_tin_khach_hang('KH001');
 CALL Danh_sach_mat_hang();
 CALL Tong_doanh_thu();
 CALL Thong_ke_ton_kho();

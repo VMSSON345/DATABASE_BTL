@@ -12,7 +12,7 @@ FOR EACH ROW
 BEGIN
     DECLARE sl_ton INT;
 
-    SELECT SLTONKHO INTO sl_ton 
+    SELECT SL_TONKHO INTO sl_ton 
     FROM mat_hang 
     WHERE MA_MH = NEW.MA_MH;
 
@@ -22,7 +22,7 @@ BEGIN
     END IF;
 
     UPDATE mat_hang
-    SET SLTONKHO = SLTONKHO - NEW.SO_LUONG
+    SET SL_TONKHO = SL_TONKHO - NEW.SO_LUONG
     WHERE MA_MH = NEW.MA_MH;
 END $$
 
@@ -36,13 +36,13 @@ BEGIN
     DECLARE delta INT;
     SET delta = NEW.SO_LUONG - OLD.SO_LUONG;
 
-    IF (SELECT SLTONKHO FROM mat_hang WHERE MA_MH = OLD.MA_MH) - delta < 0 THEN
+    IF (SELECT SL_TONKHO FROM mat_hang WHERE MA_MH = OLD.MA_MH) - delta < 0 THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Error: Số lượng tồn kho không đủ để cập nhật';
     END IF;
 
     UPDATE mat_hang
-    SET SLTONKHO = SLTONKHO - delta
+    SET SL_TONKHO = SL_TONKHO - delta
     WHERE MA_MH = OLD.MA_MH;
 END $$
 
